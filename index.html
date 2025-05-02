@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HÖNESTAG Itinerary 🇩🇪</title>
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Luxon for timezone-aware date handling -->
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
+  <style>
+    /* Blur effect for upcoming events */
+    .blurred {
+      filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="bg-[#f2efe6] p-6">
+  <div class="max-w-md mx-auto">
+    <!-- Logo; click to unlock -->
+    <img
+      src="img/andrew.png"
+      alt="Andrew"
+      class="w-32 h-32 rounded-full mx-auto mb-4 cursor-pointer"
+      data-logo
+    >
+
+    <h1 class="text-4xl font-bold mb-6 text-black text-center flex flex-col">
+      <span class="text-6xl">🇩🇪</span>
+      <span>HÖNESTAG Itinerary</span>
+    </h1>
+
+    <ul id="timeline" class="relative border-l-2 border-black"></ul>
+  </div>
+
+  <script>
+    // Use Luxon for timezone support
+    const { DateTime } = luxon;
+
+    // Sample events; expanded JSON for easy management
+    const events = [
+      {
+        time: '2025-05-09T12:00:00',
+        timezone: 'Europe/London',
+        label: '10:00',
+        title: 'Pick up the Stag',
+        imageUrl: 'img/honestag-limo.png'
+      },
+      {
+        time: '2025-05-09T11:00:00',
+        timezone: 'Europe/London',
+        label: '10:30',
+        title: 'Quick brunch',
+        imageUrl: 'img/preflight-lunch.png'
+      },
+      {
+        time: '2025-05-09T13:00:00',
+        timezone: 'Europe/London',
+        label: '14:00',
+        title: 'Arrive at MCR Airport / The Reveal',
+        imageUrl: 'img/mcr-airport.png'
+      },
+      {
+        time: '2025-05-09T17:45:00',
+        timezone: 'Europe/London',
+        label: '17:45',
+        title: '🛫 MCR to CGN',
+        description: 'Ryanair Flight FR6630',
+        imageUrl: 'img/ryanair-7M8.avif'
+      },
+      {
+        time: '2025-05-09T20:20:00',
+        timezone: 'Europe/Berlin',
+        label: '20:20',
+        title: 'Land in Köln Bonn',
+        imageUrl: 'img/koln-bonn.png'
+      },
+      {
+        time: '2025-05-09T21:30:00',
+        timezone: 'Europe/Berlin',
+        label: '21:30',
+        title: 'Check in at Airbnb and hotel',
+        description: 'Dünnwalder Straße 66 <br> Köln <br> Nordrhein-Westfalen 51063',
+        imageUrl: 'img/airbnb.png'
+      },
+      {
+        time: '2025-05-10T00:00:00',
+        timezone: 'Europe/Berlin',
+        label: '00:00',
+        title: 'Bed'
+      },
+      {
+        time: '2025-05-10T10:00:00',
+        timezone: 'Europe/Berlin',
+        label: '10:00',
+        title: 'Up & Ready'
+      },
+      {
+        time: '2025-05-10T10:30:00',
+        timezone: 'Europe/Berlin',
+        label: '10:30',
+        title: 'Walk Along the Rhine',
+        imageUrl: 'img/rhine.webp'
+      },
+      {
+        time: '2025-05-10T11:00:00',
+        timezone: 'Europe/Berlin',
+        label: '11:00',
+        title: 'Hohenzollern Bridge',
+        description: 'Padlock the love bridge',
+        imageUrl: 'img/hohenzollern-bridge.jpg'
+      }
+    ];
+
+    /**
+     * Render timeline with date headings and auto-numbered events.
+     */
+    function renderTimeline() {
+      const list = document.getElementById('timeline');
+
+      // Sort events by actual datetime in their timezone
+      events.sort((a, b) => {
+        const dtA = DateTime.fromISO(a.time, { zone: a.timezone });
+        const dtB = DateTime.fromISO(b.time, { zone: b.timezone });
+        return dtA - dtB;
+      });
+
+      let currentDate = null;
+
+      events.forEach((event, index) => {
+        // Parse event time in its timezone
+        const eventDt = DateTime.fromISO(event.time, { zone: event.timezone });
+        // Format date with ordinal suffix (e.g. "Friday 9th May 2025")
+        const eventDateStr = eventDt.toFormat("EEEE DDD");
+
+        // If date changed, insert a single date header
+        if (eventDateStr !== currentDate) {
+          currentDate = eventDateStr;
+          const headerLi = document.createElement('li');
+          headerLi.className = 'ml-6 mb-4';
+          headerLi.innerHTML = `
+            <h2 class="text-lg font-semibold text-gray-700">${eventDateStr}</h2>
+          `;
+          list.appendChild(headerLi);
+        }
+
+        // Create event item
+        const li = document.createElement('li');
+        li.className = 'mb-10 ml-6';
+        li.setAttribute('data-time', event.time);
+        li.setAttribute('data-tz', event.timezone);
+
+        const marker = index + 1; // auto-number
+        const imgHtml = event.imageUrl
+          ? `
+            <img
+              src="${event.imageUrl}"
+              alt="${event.title}"
+              class="w-full h-32 object-cover rounded-t-lg mb-2"
+            >
+          `
+          : '';
+
+        li.innerHTML = `
+          <span
+            class="absolute -left-3 flex items-center justify-center w-6 h-6 bg-red-600 rounded-full ring-4 ring-yellow-400 text-white"
+          >${marker}</span>
+          <div class="p-4 bg-white rounded-lg shadow-md blurred event-item">
+            ${imgHtml}
+            <div class="flex justify-between items-center mb-2">
+              <time class="text-sm font-medium text-red-600">${event.label}</time>
+            </div>
+            <p class="text-gray-800">${event.title}</p>
+            <p class="text-gray-800 text-sm mt-2">${event.description ?? ''}</p>
+          </div>
+        `;
+
+        list.appendChild(li);
+      });
+    }
+
+    /**
+     * Reveal events that have passed in their timezone.
+     */
+    function updateTimeline() {
+      const now = DateTime.now();
+      document.querySelectorAll('.event-item').forEach(item => {
+        const li = item.closest('li');
+        const tz = li.getAttribute('data-tz');
+        const eventTime = DateTime.fromISO(li.getAttribute('data-time'), { zone: tz });
+        if (eventTime <= now) {
+          item.classList.remove('blurred');
+          item.classList.add('transition', 'duration-500', 'ease-out');
+        }
+      });
+    }
+
+    /**
+     * Unlock reveal on logo click, using password and re-blur logic.
+     */
+    function enableSecretReveal() {
+      const logo = document.querySelector('[data-logo]');
+      logo.addEventListener('click', () => {
+        const password = prompt('Enter password:');
+        if (password === 'honestag25') {
+          document.querySelectorAll('.event-item').forEach(item => item.classList.remove('blurred'));
+          setTimeout(() => {
+            const later = DateTime.now();
+            document.querySelectorAll('.event-item').forEach(item => {
+              const li = item.closest('li');
+              const tz = li.getAttribute('data-tz');
+              const eventTime = DateTime.fromISO(li.getAttribute('data-time'), { zone: tz });
+              if (eventTime > later) {
+                item.classList.add('blurred');
+              }
+            });
+          }, 60000);
+        } else {
+          alert('Naughty, Andrew!');
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTimeline();
+      updateTimeline();
+      enableSecretReveal();
+      setInterval(updateTimeline, 60000);
+    });
+  </script>
+</body>
+</html>
