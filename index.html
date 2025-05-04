@@ -25,7 +25,7 @@
   </script>
 
   <style>
-    .blurred { filter: blur(14px); }
+/*     .blurred { filter: blur(14px); } */
     .weatherwidget-io { pointer-events: none; margin-bottom: 2rem; }
   </style>
 </head>
@@ -56,43 +56,36 @@
 
     const events = [
   {
-    time: '2025-05-09T12:00:00',
+    time: '2025-05-09T09:00:00',
     timezone: 'Europe/London',
     label: '10:00',
     title: 'Pick up the Stag',
     imageUrl: 'img/honestag-limo.png'
   },
   {
-    time: '2025-05-09T11:00:00',
+    time: '2025-05-09T09:00:00',
     timezone: 'Europe/London',
     label: '10:30',
     title: 'Quick brunch',
     imageUrl: 'img/preflight-lunch.png'
   },
   {
-    time: '2025-05-09T13:00:00',
+    time: '2025-05-09T14:00:00',
     timezone: 'Europe/London',
     label: '14:00',
     title: 'Arrive at MCR Airport / The Reveal',
     imageUrl: 'img/mcr-airport.png'
   },
   {
-    time: '2025-05-09T17:45:00',
+    time: '2025-05-09T15:00:00',
     timezone: 'Europe/London',
-    label: '17:45',
+    label: '17:45 (GB) – 20:20 (DE)',
     title: '🛫 MCR to CGN',
     description: 'Ryanair Flight FR6630',
     imageUrl: 'img/ryanair-7M8.avif'
   },
   {
     time: '2025-05-09T20:20:00',
-    timezone: 'Europe/Berlin',
-    label: '20:20',
-    title: 'Land in Köln Bonn',
-    imageUrl: 'img/koln-bonn.png'
-  },
-  {
-    time: '2025-05-09T21:30:00',
     timezone: 'Europe/Berlin',
     label: '21:30',
     title: 'Check in at Airbnb and hotel',
@@ -101,16 +94,16 @@
   },
   {
     alwaysVisible: true,
-    time: '2025-05-10T00:00:00',
+    time: '2025-05-09T20:30:00',
     timezone: 'Europe/Berlin',
-    label: '00:00',
+    label: '23:59',
     title: 'Bed',
     description: 'Get some sleep, you\'ll need it!',
     imageUrl: 'img/bnb-bed.png'
   },
   {
     alwaysVisible: true,
-    time: '2025-05-10T09:00:00',
+    time: '2025-05-10T09:30:00',
     timezone: 'Europe/Berlin',
     label: '09:30',
     title: 'Up & Ready',
@@ -118,17 +111,10 @@
   {
     time: '2025-05-10T10:00:00',
     timezone: 'Europe/Berlin',
-    label: '10:48',
+    label: '10:48 – 12:12',
     title: '🚅 Train to Aachen',
     description: 'Köln Hbf to Aachen Hbf',
     imageUrl: 'img/koln-hbf.jpg'
-  },
-  {
-    time: '2025-05-10T10:00:00',
-    timezone: 'Europe/Berlin',
-    label: '12:12',
-    title: 'Arrive in Aachen',
-    imageUrl: 'img/aachen.jpeg',
   },
   {
     time: '2025-05-10T13:00:00',
@@ -141,15 +127,7 @@
   {
     time: '2025-05-10T17:00:00',
     timezone: 'Europe/Berlin',
-    label: '17:44',
-    title: 'Train to Köln',
-    description: '🚅 Aachen Hbf to Köln Hbf',
-    imageUrl: 'img/aachen-hbf.jpg'
-  },
-  {
-    time: '2025-05-10T13:00:00',
-    timezone: 'Europe/Berlin',
-    label: '17:44',
+    label: '17:44 – 19:09',
     title: 'Train to Köln',
     description: '🚅 Aachen Hbf to Köln Hbf',
     imageUrl: 'img/aachen-hbf.jpg'
@@ -162,7 +140,7 @@
       title: 'Up & Ready'
     },
   {
-    time: '2025-05-11T10:30:00',
+    time: '2025-05-11T10:00:00',
     timezone: 'Europe/Berlin',
     label: '10:30',
     title: 'Walk Along the Rhine',
@@ -177,7 +155,7 @@
     imageUrl: 'img/hohenzollern-bridge.jpg'
   },
   {
-    time: '2025-05-11T12:00:00',
+    time: '2025-05-11T11:00:00',
     timezone: 'Europe/Berlin',
     label: '12:00',
     title: 'Lunch & Explore',
@@ -205,7 +183,28 @@
     title: 'Dinner Reservation',
     description: 'Location booked by the beer tour company',
     imageUrl: 'img/german-dinner.jpg'
-  }
+  },
+  {
+      time: '2025-05-12T09:00:00',
+      timezone: 'Europe/Berlin',
+      label: '11:00',
+      title: 'Checkout of Airbnb',
+    },
+    {
+      time: '2025-05-12T09:00:00',
+      timezone: 'Europe/Berlin',
+      label: '11:00 – 16:00',
+      title: 'Enjoy Cologne!',
+      imageUrl: 'img/koln.jpg'
+    },
+  {
+      time: '2025-05-12T12:00:00',
+      timezone: 'Europe/Berlin',
+      label: '18:25 (DE) – 19:00 (GB)',
+      title: '🛫 CGN to MCR',
+      description: 'Ryanair Flight FR1592',
+      imageUrl: 'img/ryanair-7M8.avif'
+    },
 ];
 
     function renderTimeline() {
