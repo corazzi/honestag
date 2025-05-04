@@ -257,7 +257,7 @@
 
     function enableSecretReveal(){
       document.querySelector('[data-logo]').addEventListener('click',()=>{
-        const pw=prompt('Enter password:');
+        const pw = prompt('Enter password:').toLowerCase();
         if(pw==='honestag25'){document.querySelectorAll('.event-item').forEach(i=>i.classList.remove('blurred'));
           setTimeout(()=>{const later=DateTime.now();document.querySelectorAll('#timeline li').forEach(li=>{if(!li.dataset.time)return;const item=li.querySelector('.event-item');const et=DateTime.fromISO(li.dataset.time,{zone:li.dataset.tz});if(et>later)item.classList.add('blurred');});},60000);
         }else alert('Naughty, Andrew!');
